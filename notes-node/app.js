@@ -1,30 +1,28 @@
 console.log("starting app.js!")
 
-const fs = require('fs');
-const os = require("os");
+const fs = require("fs")
 const _ = require('lodash');
+const yargs = require('yargs')
+
 const notes = require('./notes.js');
 
-//let user = os.userInfo();
+const argv = yargs.argv;
 
-// fs.appendFile("greetings.txt", `hello ${user.username} !`, function (err){
-//     if (err){
-//         console.log('unable to write to file');
-//     }
-// })
-// // permet d'ajouter du texte dans greetings.txt
+const command = process.argv[2];
+console.log("command :", command);
+console.log("process :",process.argv);
+// permet d'afficher un argument quand on tape ex: npm app list
+console.log('yargs :', argv)
+//permet d'afficher mieux un argument en le parsing
 
-
-// console.log(notes.age);
-// // permet d'afficher l'age determiné dans notes.js
-
-// let res = notes.addNote();
-// console.log(res);
-
-// let exercice = notes.add(5,6);
-// console.log(exercice);
-
-// console.log(_.isString(true));
-// console.log(_.isString("true"));
-let filteredArray = _.uniq(["vinz", 2, "vinz", 1,2,3])
-console.log(filteredArray);
+if (command === "add"){
+    console.log('adding a new note ');
+    notes.ajoutNote(argv.title, argv.body)
+}
+else if (command === "list"){
+    console.log('listing all notes');
+    notes.getAll()
+}
+else{
+    console.log(('command not reconnized'));
+}
