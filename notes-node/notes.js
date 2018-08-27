@@ -1,0 +1,13 @@
+console.log('open notes.js')
+
+// module.exports.age = 25;
+
+// module.exports.addNote = () => {
+//     console.log('addNote');
+//     return 'New note';
+// }
+
+// module.exports.add = (a,b) => {
+//  return a+b;
+// }
+
