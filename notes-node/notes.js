@@ -1,4 +1,4 @@
-console.log('open notes.js')
+// console.log('open notes.js')
 
 // module.exports.age = 25;
 

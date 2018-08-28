@@ -1,4 +1,4 @@
-console.log("starting app.js!")
+// console.log("starting app.js!")
 
 const fs = require("fs")
 const _ = require('lodash');
@@ -6,11 +6,29 @@ const yargs = require('yargs')
 
 const notes = require('./notes.js');
 
-const argv = yargs.argv;
+// const argv = yargs.argv;
+// // sans la fonction commande au début
+
+const argv = yargs
+  .command('add','Add a new note', {
+    title:{
+      describe: 'Title of note',
+      demand: true, //rend obligatoire le titre avec la fonction add
+      alias: 't' //permet d'utiliser --t ou --title
+    },
+    body:{
+      describe: 'body of note',
+      demand: true,
+      alias: 'b'
+    }
+  })
+  .help()
+  .argv;
+
 
 const command = process.argv[2];
-console.log("command :", command);
-console.log("process :",process.argv);
+// console.log("command :", command);
+// console.log("process :",process.argv);
 // permet d'afficher un argument quand on tape ex: npm app list
 console.log('yargs :', argv)
 //permet d'afficher mieux un argument en le parsing
