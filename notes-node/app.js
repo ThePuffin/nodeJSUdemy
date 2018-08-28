@@ -17,12 +17,21 @@ console.log('yargs :', argv)
 
 if (command === "add"){
     console.log('adding a new note ');
-    notes.ajoutNote(argv.title, argv.body)
-}
-else if (command === "list"){
-    console.log('listing all notes');
-    notes.getAll()
-}
-else{
-    console.log(('command not reconnized'));
+    let note = notes.ajoutNote(argv.title, argv.body);
+  if (note) {
+    console.log('Note created');
+    console.log('--');
+    console.log(`Title: ${note.title}`);
+    console.log(`Body: ${note.body}`);
+  } else {
+    console.log('Note title taken');
+  }
+} else if (command === 'list') {
+  notes.getAll();
+} else if (command === 'read') {
+  notes.getNote(argv.title);
+} else if (command === 'remove') {
+  notes.removeNote(argv.title);
+} else {
+  console.log('Command not recognized');
 }
