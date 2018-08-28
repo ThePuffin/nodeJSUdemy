@@ -8,19 +8,28 @@ const notes = require('./notes.js');
 
 // const argv = yargs.argv;
 // // sans la fonction commande au début
+const titleOption = {
+  describe: 'Title of note',
+  demand: true, //rend obligatoire le titre avec la fonction add
+  alias: 't' //permet d'utiliser -t ou --title
+};
+const bodyOption = {
+  describe: 'body of note',
+  demand: true,
+  alias: 'b'
+};
 
 const argv = yargs
   .command('add','Add a new note', {
-    title:{
-      describe: 'Title of note',
-      demand: true, //rend obligatoire le titre avec la fonction add
-      alias: 't' //permet d'utiliser --t ou --title
-    },
-    body:{
-      describe: 'body of note',
-      demand: true,
-      alias: 'b'
-    }
+    title: titleOption,
+    body:bodyOption,
+  }) // permet de définir des option pour add
+  .command('list', 'list all the notes')
+  .command('read', 'read a note', {
+    title: titleOption,
+  } )
+  .command('remove', 'remove a note', {
+    title: titleOption
   })
   .help()
   .argv;
