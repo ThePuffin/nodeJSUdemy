@@ -48,7 +48,8 @@ const ajoutNote = (title, body) => {
 };
 
 const getAll = () => {
-  console.log('get all notes')
+  console.log('get all notes');
+  return fetchNotes();
 }
 
 const getNote = (title) => {
