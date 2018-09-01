@@ -1,4 +1,4 @@
-var asyncAdd = (a,b)=>{
+const asyncAdd = (a,b)=>{
     return new Promise((resolve,reject)=>{
         setTimeout(()=>{
             if(typeof a === 'number' && typeof b === 'number'){

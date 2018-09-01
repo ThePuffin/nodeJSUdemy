@@ -1,7 +1,5 @@
-const yargs = require('yargs')
-
-const geocode = require('./geocode/geocode.js');
-const weather = require('./weather/weather');
+const yargs = require('yargs');
+const axios = require('axios');
 
 const argv = yargs
   .option({
@@ -15,25 +13,27 @@ const argv = yargs
   .help()
   .alias('help', 'h').argv;
 
+  const encodeAddress = encodeURIComponent(argv.address);
+  const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeAddress}`;
 
-  geocode.geocodeAddress(argv.address, (errorMessage, results)=>{
-      if(errorMessage){
-          console.log(errorMessage)
-      }
-      else{
-          //console.log(JSON.stringify(results, undefined,2));
-          console.log(results.address);
-          //return (results)
-          weather.getWeather(results.lat,results.lng,(errorMessage, weatherResults)=>{
-            if(errorMessage){
-                console.log(errorMessage)
-            }
-            else{
-                //console.log(JSON.stringify(weatherResults, undefined,2))
-                console.log(`it's actually : ${weatherResults.temperature}. It feels like : ${weatherResults.apparentTemperature}`);
-            }
-        });
-      }
-  })
+axios.get(geocodeUrl).then((response)=>{
+    if(response.data.status === 'ZERO_RESULTS'){
+        throw new Error('unable to find that adress.')
+    }
+    const lat = response.data.results[0].geometry.location.lat;
+    const lng = response.data.results[0].geometry.location.lng;
+    const weatherUrl = `https://api.darksky.net/forecast/596d4e2d3c3df4c1ce95c141500a28ca/${lat},${lng}`;
 
-  
+    console.log(response.data.results[0].formatted_address);
+    return axios.get(weatherUrl);
+}).then((response)=>{
+    const temperature = response.data.currently.temperature;
+    const apparentTemperature = response.data.currently.apparentTemperature;
+    console.log(`it's actually : ${temperature}. It feels like : ${apparentTemperature}`);
+}).catch((e)=>{
+    if(e.code === "ENOTFOUND"){
+        console.log('unable to connect to API servers.');
+    } else {
+        console.log(e.message);
+    }
+});
